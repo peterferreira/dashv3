@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # --------------------------------
 # Codemasters F1 Dash v2
-#
+# Author : Mark Rodman
 # -------------------------------
 import os, sys, pygame, time, datetime
 from pygame.locals import *
