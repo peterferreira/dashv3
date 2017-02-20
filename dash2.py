@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # --------------------------------
-#
+# Codemasters F1 Dash v2
 # -------------------------------
 import os, sys, pygame, time, datetime
 from pygame.locals import *
