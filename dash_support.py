@@ -93,8 +93,8 @@ f1_circuits = ["Australia", "Malaysia", "China", "Bahrain", "Spain", "Monaco",  
                "Hungary", "Belgium", "Italy", "Singapore", "Japan", "Abu Dhabi", "USA", "Brazil", "Austria", "Russia",
                "Mexico", "Azerbaijan"]
 
-light_name = ["6k", "6.5K", "7k", "7.5k", "8k", "9k", "9.25K", "9.5k", "9.5k", "9.7K", "10k", "10.25k", "10.5k",
-              "10.75k", "11k", "11.25k", "11.5k", "11.75k", "12k", "12.25k", "12.7k"]
+light_name = ["6k", "7k", "7.5k", "8k", "8.5k", "9k", "9.25K", "9.5k", "9.725k", "10k", "10.25k", "10.5k", "10.75k",
+              "11.k", "11.25k", "11.5", "11.75k", "12k", "12.25k", "12.5k", "12.7k"]
 
 light_trigger_val = [6500, 7000, 7500, 8000, 8500, 9000, 9250, 9500, 9725, 10000, 10250, 10500, 10750, 11000, 11250,
                      11500, 11750, 12000, 12250, 12500, 12750]
