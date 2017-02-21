@@ -50,34 +50,30 @@ class rpm_light(object):
     def update(self, new_rpmValue):
         self.new_rpmValue = new_rpmValue
         if self.new_rpmValue > self.trigger_val:
-            print self.name + str(" : On :") + str(self.new_rpmValue)
+            #print self.name + str(" : On :") + str(self.new_rpmValue)
             self.draw_update(0, 1)
         else:
-            print self.name + str(" : Off :") + str(self.new_rpmValue)
+            #print self.name + str(" : Off :") + str(self.new_rpmValue)
             self.draw_update(0, 0)
 
 
 def setup_rpm_markers(info):
-    #Instantiate RPM ball objects
-    # Parameters used to incrementally layout rpm rectangles from left to right
     r_x = int(info.current_w) * 0.0225
     l_x = int(info.current_w) * 0.0227
     r_xf = r_x * 0.89
     l_xf = l_x * 0.85
     y = int(info.current_h) * bar_as_percentage_of_total_height
     l_y = y + 1
-    # Parameters used to incrementally layout rpm rectangles from right to left.
-    # These are draw backwards.
     rev_startx = int(info.current_w) - 1
     global right_lights
-    right_lights = []
     global left_lights
+    right_lights = []
     left_lights = []
 
     for i in range(len(light_trigger_val)):
-        print str(i) + "   "
         right_lights.append(rpm_light(light_name[i], light_colour[i], (i * r_x), 0, r_xf, y, light_trigger_val[i]))
-        left_lights.append(rpm_light(light_name[i], light_colour[i], (rev_startx - (i * l_x)), l_y, -l_xf, -y, light_trigger_val[i]))
+        left_lights.append(rpm_light(light_name[i], light_colour[i], (rev_startx - (i * l_x)), l_y, -l_xf, -y,
+                                     light_trigger_val[i]))
 
     for light in range(len(right_lights)):
         rpm_light.initialize(right_lights[light])
@@ -107,14 +103,11 @@ def randomizer():
         update_rpm(random_val)
         x += 1
         pygame.display.update()
-        time.sleep(0.07)
+        time.sleep(0.08)
     return
 
 
-
-
 def game_loop():
-    print "game loop"
     rpm = 0
     while True:
         for event in pygame.event.get():
@@ -123,11 +116,9 @@ def game_loop():
                 sys.exit()
             elif event.type == KEYDOWN:
                 if event.key == K_UP:
-                    print "UP"
                     rpm += 500
                     update_rpm(rpm)
                 if event.key == K_DOWN:
-                    print "Down"
                     rpm -= 500
                     update_rpm(rpm)
                 if event.key == K_r:
