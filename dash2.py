@@ -3,9 +3,10 @@
 # Codemasters F1 Dash v2
 # Author : Mark Rodman
 # -------------------------------
-import os, sys, pygame, time, datetime
+import os, sys, pygame, random, time, datetime
 from pygame.locals import *
 from dash_support import *
+
 
 class display_text(object):
     def __init__(self, name, forecolour, backcolour):
@@ -99,6 +100,19 @@ def update_rpm(rpm):
     return
 
 
+def randomizer():
+    x = 0
+    while x < 100:
+        random_val = random.randint(1000, 14000)
+        update_rpm(random_val)
+        x += 1
+        pygame.display.update()
+        time.sleep(0.07)
+    return
+
+
+
+
 def game_loop():
     print "game loop"
     rpm = 0
@@ -116,7 +130,8 @@ def game_loop():
                     print "Down"
                     rpm -= 500
                     update_rpm(rpm)
-
+                if event.key == K_r:
+                    randomizer()
                 if event.key == K_q:
                     pygame.quit()
                     sys.exit()

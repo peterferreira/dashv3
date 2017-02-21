@@ -9,7 +9,7 @@ display_title = 'Codemasters F1 2016'
 display_line_width = 2
 
 # RPM Bars
-bar_as_percentage_of_total_height = 0.13
+bar_as_percentage_of_total_height = 0.10
 
 # Throttle and brake pedal position lines
 throt_pedal_line_x = 550
