@@ -85,55 +85,21 @@ rpm16 = 12000
 rpm_max = 12100
 
 # F1 Team
-f1_teams = ["Red Bull Racing", "Ferari", "McLaren", "Renault F1", "Mercedes F1", "Sauber", "Force India", "Williams", "Toro Rosso",
-            "blank_9", "blank_10", "Haas Racing", "Manor", "-------------"]
+f1_teams = ["Red Bull Racing", "Ferari", "McLaren", "Renault F1", "Mercedes F1", "Sauber", "Force India", "Williams",
+            "Toro Rosso", "blank_9", "blank_10", "Haas Racing", "Manor", "-------------"]
 
 # F1 Circuits
 f1_circuits = ["Australia", "Malaysia", "China", "Bahrain", "Spain", "Monaco",  "Canada", "Britain", "Germany",
                "Hungary", "Belgium", "Italy", "Singapore", "Japan", "Abu Dhabi", "USA", "Brazil", "Austria", "Russia",
                "Mexico", "Azerbaijan"]
 
+light_name = ["6k", "6.5K", "7k", "7.5k", "8k", "9k", "9.25K", "9.5k", "9.5k", "9.7K", "10k", "10.25k", "10.5k",
+              "10.75k", "11k", "11.25k", "11.5k", "11.75k", "12k", "12.25k", "12.7k"]
 
-trig_val1 = 6500
-trig_val2 = 7000
-trig_val3 = 7500
-trig_val4 = 8000
-trig_val5 = 8500
-trig_val6 = 9000
-trig_val7 = 9250
-trig_val8 = 9500
-trig_val9 = 9725
-trig_val10 = 10000
-trig_val11 = 10250
-trig_val12 = 10500
-trig_val13 = 10750
-trig_val14 = 11000
-trig_val15 = 11250
-trig_val16 = 11500
-trig_val17 = 11750
-trig_val18 = 12000
-trig_val19 = 12250
-trig_val20 = 12500
-trig_val21 = 12750
+light_trigger_val = [6500, 7000, 7500, 8000, 8500, 9000, 9250, 9500, 9725, 10000, 10250, 10500, 10750, 11000, 11250,
+                     11500, 11750, 12000, 12250, 12500, 12750]
 
-light1 = ["6k", GREEN, trig_val1]
-light2 = ["6.5k", GREEN, trig_val2]
-light3 = ["7k", GREEN, trig_val3]
-light4 = ["7.5k", GREEN, trig_val4]
-light5 = ["8k", GREEN, trig_val5]
-light6 = ["8.5k", GREEN, trig_val6]
-light7 = ["9k", GREEN, trig_val7]
-light8 = ["9.25k", GREEN, trig_val8]
-light9 = ["9.5k", GREEN, trig_val9]
-light10 = ["9.7k", GREEN, trig_val10]
-light11 = ["10k", GREEN, trig_val11]
-light12 = ["10.25k", GREEN, trig_val12]
-light13 = ["10.5k", YELLOW, trig_val13]
-light14 = ["10.7k", YELLOW, trig_val14]
-light15 = ["11k", YELLOW, trig_val15]
-light16 = ["11.25k", YELLOW, trig_val16]
-light17 = ["11.5k", YELLOW, trig_val17]
-light18 = ["11.75k", RED, trig_val18]
-light19 = ["12k", RED, trig_val19]
-light20 = ["12.25k", RED, trig_val20]
-light21 = ["12.7k", RED, trig_val21]
+light_colour = [GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, YELLOW,
+                YELLOW, YELLOW, YELLOW, YELLOW, RED, RED, RED]
+
+
