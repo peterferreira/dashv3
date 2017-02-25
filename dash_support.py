@@ -12,6 +12,8 @@ display_line_width = 2
 bar_as_percentage_of_total_height = 0.10
 gear_text_height_multiplier = 0.15
 gear_text_width_multiplier = 0.479
+s1_text_width_multiplier = 0.1
+s1_text_height_multiplier = 0.7
 
 # Throttle and brake pedal position lines
 throt_pedal_line_x = 550
@@ -57,6 +59,7 @@ LCD_font = "open24displayst"
 
 # FONT SIZES
 gear_fontsize = 300
+sector_fontsize = 100
 big_fontsize = 80
 mid_fontsize = 45
 rpm_fontsize = 70

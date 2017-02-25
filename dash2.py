@@ -11,7 +11,7 @@ from collections import deque
 
 
 class DisplayText(object):
-    def __init__(self, name, textval, forecolour, backcolour, loc_x, loc_y):
+    def __init__(self, name, textval, forecolour, backcolour, loc_x, loc_y, myfont):
         self.name = name
         self.forecolour = forecolour
         self.backcolour = backcolour
@@ -21,20 +21,21 @@ class DisplayText(object):
         self.old_loc_x = loc_x
         self.old_loc_y = loc_y
         self.old_textval = textval
+        self.myfont = myfont
 
     def draw_text(self, textval, loc_x, loc_y):
         self.textval = textval
         self.loc_x = loc_x
         self.loc_y = loc_y
 
-        oldtext = basicFont.render(self.old_textval, True, BLACK)
+        oldtext = self.myfont.render(self.old_textval, True, BLACK)
         oldtext_rect = oldtext.get_rect()
         windowSurface.blit(oldtext, (self.old_loc_x, self.old_loc_y))
         oldrect = (loc_x, loc_y, oldtext_rect[2], oldtext_rect[3])
-        pygame.draw.rect(windowSurface, BLACK, oldrect, 0)
+        pygame.draw.rect(windowSurface, BLUE, oldrect, 0)
         pygame.display.update()
 
-        text = basicFont.render(self.textval, True, self.forecolour)
+        text = self.myfont.render(self.textval, True, self.forecolour)
         windowSurface.blit(text, (self.loc_x, self.loc_y))
         pygame.display.update()
 
@@ -44,14 +45,14 @@ class DisplayText(object):
 
     def change_text(self, textval):
         self.textval = textval
-        oldtext = basicFont.render(self.old_textval, True, BLACK)
+        oldtext = self.myfont.render(self.old_textval, True, BLACK)
         oldtext_rect = oldtext.get_rect()
         windowSurface.blit(oldtext, (self.old_loc_x, self.old_loc_y))
         oldrect = (self.loc_x, self.loc_y, oldtext_rect[2], oldtext_rect[3])
-        pygame.draw.rect(windowSurface, BLACK, oldrect, 0)
+        pygame.draw.rect(windowSurface, BLUE, oldrect, 0)
         pygame.display.update()
 
-        text = basicFont.render(self.textval, True, self.forecolour)
+        text = self.myfont.render(self.textval, True, self.forecolour)
         windowSurface.blit(text, (self.loc_x, self.loc_y))
         pygame.display.update()
 
@@ -133,6 +134,7 @@ class DataSet(object):
                 self.values.pop()
 
 
+
 def setup_rpm_markers(info):
     r_x = int(info.current_w) * 0.0225
     l_x = int(info.current_w) * 0.0227
@@ -171,11 +173,21 @@ def setup_data_arrays():
 
 def setup_screen_text(info):
     global gear_indicator
+    global s1_text
+    global s2_text
+    global s3_text
     gear_indicator = DisplayText("gear", "-", GREEN, BLACK, (info.current_w*gear_text_width_multiplier),
-                                 info.current_h*gear_text_height_multiplier)
+                                 info.current_h*gear_text_height_multiplier, basicFont)
     gear_indicator.draw_text("1", (info.current_w*gear_text_width_multiplier),
                              info.current_h*gear_text_height_multiplier)
+
+    s1_indicator = DisplayText("s1", "0.00", GREEN, BLACK, (info.current_w*s1_text_width_multiplier),
+                                 info.current_h*s1_text_height_multiplier, sectorFont)
+    s1_indicator.draw_text("1", (info.current_w*s1_text_width_multiplier),
+                         info.current_h*s1_text_height_multiplier)
+
     return
+
 
 def initial_setup():
     info = pygame.display.Info()
@@ -303,7 +315,7 @@ if __name__ == '__main__':
             fontpath = pygame.font.match_font(available_fonts[font])
             # set up fonts
     basicFont = pygame.font.Font(fontpath, gear_fontsize)
-    basicFont2 = pygame.font.Font(fontpath, 340)
+    sectorFont = pygame.font.Font(fontpath, sector_fontsize)
     instruFont = pygame.font.SysFont(None, instru_fontsize)
     logoFont = pygame.font.SysFont(None, logo_fontsize)
     # rpmFont = pygame.font.SysFont(None, rpm_fontsize)
