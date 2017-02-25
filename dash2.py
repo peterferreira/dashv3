@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # --------------------------------
 # Codemasters F1 Dash v2
 # Author : Mark Rodman
@@ -9,10 +10,39 @@ from dash_support import *
 
 
 class display_text(object):
-    def __init__(self, name, forecolour, backcolour):
+    def __init__(self, name, textval, forecolour, backcolour, loc_x, loc_y):
         self.name = name
         self.forecolour = forecolour
         self.backcolour = backcolour
+        self.textval = textval
+        self.loc_x = loc_x
+        self.loc_y = loc_y
+        self.old_loc_x = loc_x
+        self.old_loc_y = loc_y
+        self.old_textval = textval
+        self.box_text = unichr(9608)
+
+    def draw_text(self, textval, loc_x, loc_y):
+        self.textval = textval
+        self.loc_x = loc_x
+        self.loc_y = loc_y
+
+        oldtext = basicFont.render(self.old_textval, True, BLACK)
+        oldtext_rect = oldtext.get_rect()
+        windowSurface.blit(oldtext, (self.old_loc_x, self.old_loc_y))
+        oldrect = (loc_x, loc_y, oldtext_rect[2], oldtext_rect[3])
+        pygame.draw.rect(windowSurface, BLACK, oldrect, 0)
+        pygame.display.update()
+
+        text = basicFont.render(self.textval, True, self.forecolour)
+        windowSurface.blit(text, (self.loc_x, self.loc_y))
+        pygame.display.update()
+
+        self.old_loc_x = self.loc_x
+        self.old_loc_y = self.loc_y
+        self.old_textval = self.textval
+
+
 
 
 class rpm_light(object):
@@ -107,6 +137,19 @@ def randomizer():
     return
 
 
+def test_text():
+    x = 0
+    y = 300
+    test1 = display_text("test", ".", GREEN, BLACK, 500, 300)
+
+    while x < 500:
+        test1.draw_text(str(x), 500, y)
+        print x
+        x += 1
+        y += 1
+    return
+
+
 def game_loop():
     rpm = 0
     while True:
@@ -123,6 +166,8 @@ def game_loop():
                     update_rpm(rpm)
                 if event.key == K_r:
                     randomizer()
+                if event.key == K_t:
+                    test_text()
                 if event.key == K_q:
                     pygame.quit()
                     sys.exit()
@@ -150,6 +195,22 @@ def main():
 if __name__ == '__main__':
     pygame.init()
     pygame.font.init()
+    # find fonts  ----
+    available_fonts = pygame.font.get_fonts()
+    for font in range(len(available_fonts)):
+        if available_fonts[font] == LCD_font:
+            fontpath = pygame.font.match_font(available_fonts[font])
+            # set up fonts
+    basicFont = pygame.font.Font(fontpath, gear_fontsize)
+    basicFont2 = pygame.font.Font(fontpath, 340)
+    instruFont = pygame.font.SysFont(None, instru_fontsize)
+    logoFont = pygame.font.SysFont(None, logo_fontsize)
+    # rpmFont = pygame.font.SysFont(None, rpm_fontsize)
+    bigFont = pygame.font.Font(fontpath, big_fontsize)
+    midFont = pygame.font.Font(fontpath, mid_fontsize)
+    mphFont = pygame.font.SysFont(None, rpm_fontsize)
+    brakeFont = pygame.font.SysFont(None, rpm_fontsize)
+
     windowSurface = pygame.display.set_mode((0, 0), pygame.FULLSCREEN, 32)  # Now automatically uses full screen
     pygame.display.set_caption(display_title)
     windowSurface.fill(BLACK)

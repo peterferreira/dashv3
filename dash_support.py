@@ -52,6 +52,7 @@ gear_y = 160
 # FONT NAMES
 LCD_font = "open24displayst"
 
+
 # FONT SIZES
 gear_fontsize = 300
 big_fontsize = 80
