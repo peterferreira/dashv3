@@ -113,9 +113,7 @@ class DataSet(object):
         self.values.rotate(1)
         if self.length > 0:
             if len(self.values) > self.length:
-                print len(self.values)
                 self.values.pop()
-        print self.values
 
 
 def setup_rpm_markers(info):
