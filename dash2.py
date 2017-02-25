@@ -42,6 +42,23 @@ class DisplayText(object):
         self.old_loc_y = self.loc_y
         self.old_textval = self.textval
 
+    def change_text(self, textval):
+        self.textval = textval
+        oldtext = basicFont.render(self.old_textval, True, BLACK)
+        oldtext_rect = oldtext.get_rect()
+        windowSurface.blit(oldtext, (self.old_loc_x, self.old_loc_y))
+        oldrect = (self.loc_x, self.loc_y, oldtext_rect[2], oldtext_rect[3])
+        pygame.draw.rect(windowSurface, BLACK, oldrect, 0)
+        pygame.display.update()
+
+        text = basicFont.render(self.textval, True, self.forecolour)
+        windowSurface.blit(text, (self.loc_x, self.loc_y))
+        pygame.display.update()
+
+        self.old_loc_x = self.loc_x
+        self.old_loc_y = self.loc_y
+        self.old_textval = self.textval
+
 
 class RpmLight(object):
     def __init__(self, name, colour, startx, starty, width, height, trigger_val):
@@ -152,11 +169,19 @@ def setup_data_arrays():
     return
 
 
+def setup_screen_text(info):
+    global gear_indicator
+    gear_indicator = DisplayText("gear", "-", GREEN, BLACK, (info.current_w*gear_text_width_multiplier),
+                                 info.current_h*gear_text_height_multiplier)
+    gear_indicator.draw_text("1", (info.current_w*gear_text_width_multiplier),
+                             info.current_h*gear_text_height_multiplier)
+    return
 
 def initial_setup():
     info = pygame.display.Info()
     print type(info)
     setup_rpm_markers(info)
+    setup_screen_text(info)
     setup_data_arrays()
     pygame.display.update()
     return
@@ -166,6 +191,11 @@ def update_rpm(rpm):
     for light in range(len(right_lights)):
         RpmLight.update(right_lights[light], rpm)
         RpmLight.update(left_lights[light], rpm)
+    return
+
+
+def update_gear(gear):
+    gear_indicator.change_text(gear)
     return
 
 
@@ -225,6 +255,20 @@ def game_loop():
                     test_text()
                 if event.key == K_m:
                     test_data()
+                if event.key == K_1:
+                    update_gear("1")
+                if event.key == K_2:
+                    update_gear("2")
+                if event.key == K_3:
+                    update_gear("3")
+                if event.key == K_4:
+                    update_gear("4")
+                if event.key == K_5:
+                    update_gear("5")
+                if event.key == K_6:
+                    update_gear("6")
+                if event.key == K_7:
+                    update_gear("7")
                 if event.key == K_q:
                     pygame.quit()
                     sys.exit()

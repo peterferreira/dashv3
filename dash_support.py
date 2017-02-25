@@ -10,6 +10,8 @@ display_line_width = 2
 
 # RPM Bars
 bar_as_percentage_of_total_height = 0.10
+gear_text_height_multiplier = 0.15
+gear_text_width_multiplier = 0.479
 
 # Throttle and brake pedal position lines
 throt_pedal_line_x = 550
