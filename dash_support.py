@@ -3,16 +3,14 @@ udp_ip = "0.0.0.0"
 udp_port = 20777
 
 # GENERAL DISPLAY SETTINGS
-display_width = 800
-display_height = 480
 display_title = 'Codemasters F1 2016'
 display_line_width = 2
 
 # RPM Bars
 bar_as_percentage_of_total_height = 0.10
-gear_text_height_multiplier = 0.15
-gear_text_width_multiplier = 0.479
-s1_text_width_multiplier = 0.1
+gear_text_height_multiplier = 0.14
+gear_text_width_multiplier = 0.465
+s1_text_width_multiplier = 0.2
 s1_text_height_multiplier = 0.7
 
 # Throttle and brake pedal position lines
@@ -49,27 +47,20 @@ TEXT_INSTRU = (58, 64, 86)
 PURPLE = (163, 1, 117)
 YELLOW = (219, 200, 10)
 
-# GEAR TEXT X & Y
-gear_x = 415
-gear_y = 160
 
 # FONT NAMES
 LCD_font = "open24displayst"
 
-
 # FONT SIZES
-gear_fontsize = 300
-sector_fontsize = 100
+gear_fontsize_ratio = 0.25
+sector_fontsize_ratio = 0.05
+
 big_fontsize = 80
 mid_fontsize = 45
 rpm_fontsize = 70
 instru_fontsize = 20
 logo_fontsize = 20
 
-# RPM BALLS
-rpm_ball_start_x = 25
-rpm_ball_start_y = 25
-rpm_ball_x_inc = 50
 
 # RPM Values limits [F1 Game]
 rpm1 = 8500

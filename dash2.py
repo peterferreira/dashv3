@@ -27,35 +27,27 @@ class DisplayText(object):
         self.textval = textval
         self.loc_x = loc_x
         self.loc_y = loc_y
-
-        oldtext = self.myfont.render(self.old_textval, True, BLACK)
-        oldtext_rect = oldtext.get_rect()
+        oldtext = self.myfont.render(self.old_textval, False, BLACK)
+        self.myfont.set_bold(True)
         windowSurface.blit(oldtext, (self.old_loc_x, self.old_loc_y))
-        oldrect = (loc_x, loc_y, oldtext_rect[2], oldtext_rect[3])
-        pygame.draw.rect(windowSurface, BLUE, oldrect, 0)
         pygame.display.update()
-
-        text = self.myfont.render(self.textval, True, self.forecolour)
+        self.myfont.set_bold(False)
+        text = self.myfont.render(self.textval, False, self.forecolour)
         windowSurface.blit(text, (self.loc_x, self.loc_y))
-        pygame.display.update()
-
         self.old_loc_x = self.loc_x
         self.old_loc_y = self.loc_y
         self.old_textval = self.textval
 
     def change_text(self, textval):
         self.textval = textval
-        oldtext = self.myfont.render(self.old_textval, True, BLACK)
-        oldtext_rect = oldtext.get_rect()
+        oldtext = self.myfont.render(self.old_textval, False, BLACK)
+        self.myfont.set_bold(True)
         windowSurface.blit(oldtext, (self.old_loc_x, self.old_loc_y))
-        oldrect = (self.loc_x, self.loc_y, oldtext_rect[2], oldtext_rect[3])
-        pygame.draw.rect(windowSurface, BLUE, oldrect, 0)
         pygame.display.update()
-
-        text = self.myfont.render(self.textval, True, self.forecolour)
+        self.myfont.set_bold(False)
+        text = self.myfont.render(self.textval, False, self.forecolour)
         windowSurface.blit(text, (self.loc_x, self.loc_y))
         pygame.display.update()
-
         self.old_loc_x = self.loc_x
         self.old_loc_y = self.loc_y
         self.old_textval = self.textval
@@ -134,7 +126,6 @@ class DataSet(object):
                 self.values.pop()
 
 
-
 def setup_rpm_markers(info):
     r_x = int(info.current_w) * 0.0225
     l_x = int(info.current_w) * 0.0227
@@ -176,22 +167,29 @@ def setup_screen_text(info):
     global s1_text
     global s2_text
     global s3_text
+
     gear_indicator = DisplayText("gear", "-", GREEN, BLACK, (info.current_w*gear_text_width_multiplier),
                                  info.current_h*gear_text_height_multiplier, basicFont)
+
     gear_indicator.draw_text("1", (info.current_w*gear_text_width_multiplier),
                              info.current_h*gear_text_height_multiplier)
 
     s1_indicator = DisplayText("s1", "0.00", GREEN, BLACK, (info.current_w*s1_text_width_multiplier),
                                  info.current_h*s1_text_height_multiplier, sectorFont)
+
     s1_indicator.draw_text("1", (info.current_w*s1_text_width_multiplier),
                          info.current_h*s1_text_height_multiplier)
+
+    s2_indicator = DisplayText("s2", "0.00", GREEN, BLACK, 0, 0, sectorFont)
+
+    s2_indicator.draw_text("1", 0, 0)
 
     return
 
 
 def initial_setup():
     info = pygame.display.Info()
-    print type(info)
+    print (info)
     setup_rpm_markers(info)
     setup_screen_text(info)
     setup_data_arrays()
@@ -308,14 +306,15 @@ def main():
 if __name__ == '__main__':
     pygame.init()
     pygame.font.init()
+    info = pygame.display.Info()
     # find fonts  ----
     available_fonts = pygame.font.get_fonts()
     for font in range(len(available_fonts)):
         if available_fonts[font] == LCD_font:
             fontpath = pygame.font.match_font(available_fonts[font])
             # set up fonts
-    basicFont = pygame.font.Font(fontpath, gear_fontsize)
-    sectorFont = pygame.font.Font(fontpath, sector_fontsize)
+    basicFont = pygame.font.Font(fontpath, int((info.current_w) * gear_fontsize_ratio))
+    sectorFont = pygame.font.Font(fontpath, int(info.current_w * sector_fontsize_ratio))
     instruFont = pygame.font.SysFont(None, instru_fontsize)
     logoFont = pygame.font.SysFont(None, logo_fontsize)
     # rpmFont = pygame.font.SysFont(None, rpm_fontsize)
