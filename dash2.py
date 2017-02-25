@@ -101,15 +101,14 @@ class DataSet(object):
         Data is reversed, so most recent value is first element with in the array.
         eg , deque([9, 8, 7, 6, 5, 4, 3, 2, 1, 0])
         """
-
     count = 0
-    values = deque([])
 
     def __init__(self, name, length):
         DataSet.count += 1
         self.name = name
         self.length = length
         self.data_value = ''
+        self.values = deque([])
         if self.length != 0:
             for x in range(self.length):
                 self.values.append(0)
@@ -151,60 +150,66 @@ def setup_rpm_markers(info):
 
 
 def setup_data_arrays():
-    global sector1
-    global sector2
-    global sector3
-    global lap_times
-    sector1 = DataSet("S1", 0)
-    sector2 = DataSet("S2", 0)
-    sector3 = DataSet("S3", 0)
+    # Function used to define data arrays specifically used in the application.
+    global sector1                          # Sector 1 times,
+    global sector2                          # Sector 2 times,
+    global sector3                          # Sector 3 times,
+    global lap_times                        # Sector 4 times,
+    sector1 = DataSet("S1", 10)
+    sector2 = DataSet("S2", 10)
+    sector3 = DataSet("S3", 10)
     lap_times = DataSet("Lap Times", 0)
     return
 
 
 def setup_screen_text(info):
     global gear_indicator
-    global s1_text
-    global s2_text
-    global s3_text
-    height = info.current_h
-    height_ratio = 0.16
+    global s1a_indicator
+    global s2a_indicator
+    global s3a_indicator
 
+    global s1b_indicator
+    global s2b_indicator
+    global s3b_indicator
+
+    global s1c_indicator
+    global s2c_indicator
+    global s3c_indicator
+
+    # Gear Indicator
     gear_indicator = DisplayText("gear", "-", GREEN, BLACK, (info.current_w*gear_text_width_multiplier), info.current_h*gear_text_height_multiplier, basicFont)
-
     gear_indicator.draw_text("1", (info.current_w*gear_text_width_multiplier), info.current_h*gear_text_height_multiplier)
 
 
+    # Scaling factors for sector times
+    height = info.current_h                                                             # Height of the screen
+    height_ratio = 0.16                                                                 # Ratio multiplier
+
+    # Latest Lap
     s1a_indicator = DisplayText("s1a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio )*3)), sectorFont)
-    s1a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio )*2.5)))
-
+    s1a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio)*2.5)))
     s2a_indicator = DisplayText("s2a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio )*3)), sectorFont)
-    s2a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio )*2.5)))
-
+    s2a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio)*2.5)))
     s3a_indicator = DisplayText("s3a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio )*3)), sectorFont)
-    s3a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio )*2.5)))
+    s3a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio)*2.5)))
 
-
+    # Latest Lap + 1
     s1b_indicator = DisplayText("s1b", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*0)+(info.current_w/60)),(height-((height*height_ratio )*2)), sectorFont)
-    s1b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio )*1.75)))
-
+    s1b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio)*1.75)))
     s2b_indicator = DisplayText("s2b", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio )*2)), sectorFont)
     s2b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio )*1.75)))
+    s3b_indicator = DisplayText("s3b", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio )*2)), sectorFont)
+    s3b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio)*1.75)))
 
-    s2c_indicator = DisplayText("s2c", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio )*2)), sectorFont)
-    s2c_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio )*1.75)))
+    # Latest Lap +2
+    s1c_indicator = DisplayText("s1c", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*0)+(info.current_w/60)),(height-((height*height_ratio)*1)), sectorFont)
+    s1c_indicator.draw_text("1.00", (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio)*1)))
 
+    s2c_indicator = DisplayText("s2c", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio)*1)), sectorFont)
+    s2c_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio)*1)))
 
-
-    s3a_indicator = DisplayText("s3a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*0)+(info.current_w/60)),(height-((height*height_ratio )*1)), sectorFont)
-    s3a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio )*1)))
-
-    s3b_indicator = DisplayText("s3b", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio )*1)), sectorFont)
-    s3b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio )*1)))
-
-    s3c_indicator = DisplayText("s3c", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio )*1)), sectorFont)
-    s3c_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio )*1)))
-
+    s3c_indicator = DisplayText("s3c", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio)*1)), sectorFont)
+    s3c_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio)*1)))
 
     return
 
@@ -230,6 +235,17 @@ def update_gear(gear):
     gear_indicator.change_text(gear)
     return
 
+def update_sectors():
+    s1a_indicator.change_text(str(sector1.values[0]))
+    s2a_indicator.change_text(str(sector2.values[0]))
+    s3a_indicator.change_text(str(sector3.values[0]))
+    s1b_indicator.change_text(str(sector1.values[1]))
+    s2b_indicator.change_text(str(sector2.values[1]))
+    s3b_indicator.change_text(str(sector3.values[1]))
+    s1c_indicator.change_text(str(sector1.values[2]))
+    s2c_indicator.change_text(str(sector2.values[2]))
+    s3c_indicator.change_text(str(sector3.values[2]))
+    return
 
 def randomizer():
     x = 0
@@ -246,7 +262,6 @@ def test_text():
     x = 0
     y = 300
     test1 = DisplayText("test", ".", GREEN, BLACK, 500, 300)
-
     while x < 500:
         test1.draw_text(str(x), 500, y)
         print x
@@ -262,6 +277,13 @@ def test_data():
         points1.add_value(x)
         x += 1
 
+
+def test_sectors():
+    sector1.add_value(random.randint(10,100)*1.345)
+    sector2.add_value(random.randint(10,100)*1.345)
+    sector3.add_value(random.randint(10,100)*1.234)
+    update_sectors()
+    return
 
 def game_loop():
     rpm = 0
@@ -287,6 +309,8 @@ def game_loop():
                     test_text()
                 if event.key == K_m:
                     test_data()
+                if event.key == K_s:
+                    test_sectors()
                 if event.key == K_1:
                     update_gear("1")
                 if event.key == K_2:
