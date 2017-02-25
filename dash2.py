@@ -167,22 +167,44 @@ def setup_screen_text(info):
     global s1_text
     global s2_text
     global s3_text
+    height = info.current_h
+    height_ratio = 0.16
 
-    gear_indicator = DisplayText("gear", "-", GREEN, BLACK, (info.current_w*gear_text_width_multiplier),
-                                 info.current_h*gear_text_height_multiplier, basicFont)
+    gear_indicator = DisplayText("gear", "-", GREEN, BLACK, (info.current_w*gear_text_width_multiplier), info.current_h*gear_text_height_multiplier, basicFont)
 
-    gear_indicator.draw_text("1", (info.current_w*gear_text_width_multiplier),
-                             info.current_h*gear_text_height_multiplier)
+    gear_indicator.draw_text("1", (info.current_w*gear_text_width_multiplier), info.current_h*gear_text_height_multiplier)
 
-    s1_indicator = DisplayText("s1", "0.00", GREEN, BLACK, (info.current_w*s1_text_width_multiplier),
-                                 info.current_h*s1_text_height_multiplier, sectorFont)
 
-    s1_indicator.draw_text("1", (info.current_w*s1_text_width_multiplier),
-                         info.current_h*s1_text_height_multiplier)
+    s1a_indicator = DisplayText("s1a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio )*3)), sectorFont)
+    s1a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio )*2.5)))
 
-    s2_indicator = DisplayText("s2", "0.00", GREEN, BLACK, 0, 0, sectorFont)
+    s2a_indicator = DisplayText("s2a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio )*3)), sectorFont)
+    s2a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio )*2.5)))
 
-    s2_indicator.draw_text("1", 0, 0)
+    s3a_indicator = DisplayText("s3a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio )*3)), sectorFont)
+    s3a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio )*2.5)))
+
+
+    s1b_indicator = DisplayText("s1b", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*0)+(info.current_w/60)),(height-((height*height_ratio )*2)), sectorFont)
+    s1b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio )*1.75)))
+
+    s2b_indicator = DisplayText("s2b", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio )*2)), sectorFont)
+    s2b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio )*1.75)))
+
+    s2c_indicator = DisplayText("s2c", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio )*2)), sectorFont)
+    s2c_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio )*1.75)))
+
+
+
+    s3a_indicator = DisplayText("s3a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*0)+(info.current_w/60)),(height-((height*height_ratio )*1)), sectorFont)
+    s3a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio )*1)))
+
+    s3b_indicator = DisplayText("s3b", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio )*1)), sectorFont)
+    s3b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio )*1)))
+
+    s3c_indicator = DisplayText("s3c", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio )*1)), sectorFont)
+    s3c_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio )*1)))
+
 
     return
 

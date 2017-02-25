@@ -8,10 +8,19 @@ display_line_width = 2
 
 # RPM Bars
 bar_as_percentage_of_total_height = 0.10
-gear_text_height_multiplier = 0.14
+
+gear_text_height_multiplier = 0.05
 gear_text_width_multiplier = 0.465
-s1_text_width_multiplier = 0.2
-s1_text_height_multiplier = 0.7
+
+sector_space_div = 7
+sector_a_height_multiplier = 0.6
+
+s1a_text_width_multiplier = 0.2
+s1a_text_height_multiplier = 0.7
+s2a_text_width_multiplier = 0.2
+s2a_text_height_multiplier = 0.7
+s3a_text_width_multiplier = 0.2
+s3a_text_height_multiplier = 0.7
 
 # Throttle and brake pedal position lines
 throt_pedal_line_x = 550
