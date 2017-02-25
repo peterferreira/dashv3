@@ -7,9 +7,10 @@
 import os, sys, pygame, random, time, datetime
 from pygame.locals import *
 from dash_support import *
+from collections import deque
 
 
-class display_text(object):
+class DisplayText(object):
     def __init__(self, name, textval, forecolour, backcolour, loc_x, loc_y):
         self.name = name
         self.forecolour = forecolour
@@ -20,7 +21,6 @@ class display_text(object):
         self.old_loc_x = loc_x
         self.old_loc_y = loc_y
         self.old_textval = textval
-        self.box_text = unichr(9608)
 
     def draw_text(self, textval, loc_x, loc_y):
         self.textval = textval
@@ -43,9 +43,7 @@ class display_text(object):
         self.old_textval = self.textval
 
 
-
-
-class rpm_light(object):
+class RpmLight(object):
     def __init__(self, name, colour, startx, starty, width, height, trigger_val):
         self.name = name
         self.colour = colour
@@ -87,6 +85,39 @@ class rpm_light(object):
             self.draw_update(0, 0)
 
 
+class DataSet(object):
+    """ A data class used to hold incrementing race values.  Length of zero used to not set a fixed length array
+        if length is greater than zero then fix length used.
+        Data is reversed, so most recent value is first element with in the array.
+        eg , deque([9, 8, 7, 6, 5, 4, 3, 2, 1, 0])
+        """
+
+    count = 0
+    values = deque([])
+
+    def __init__(self, name, length):
+        DataSet.count += 1
+        self.name = name
+        self.length = length
+        self.data_value = ''
+        if self.length != 0:
+            for x in range(self.length):
+                self.values.append(0)
+                self.values.rotate(1)
+        else:
+            self.values.append(0)
+
+    def add_value(self, data_value):
+        self.data_value = data_value
+        self.values.append(self.data_value)
+        self.values.rotate(1)
+        if self.length > 0:
+            if len(self.values) > self.length:
+                print len(self.values)
+                self.values.pop()
+        print self.values
+
+
 def setup_rpm_markers(info):
     r_x = int(info.current_w) * 0.0225
     l_x = int(info.current_w) * 0.0227
@@ -101,28 +132,42 @@ def setup_rpm_markers(info):
     left_lights = []
 
     for i in range(len(light_trigger_val)):
-        right_lights.append(rpm_light(light_name[i], light_colour[i], (i * r_x), 0, r_xf, y, light_trigger_val[i]))
-        left_lights.append(rpm_light(light_name[i], light_colour[i], (rev_startx - (i * l_x)), l_y, -l_xf, -y,
+        right_lights.append(RpmLight(light_name[i], light_colour[i], (i * r_x), 0, r_xf, y, light_trigger_val[i]))
+        left_lights.append(RpmLight(light_name[i], light_colour[i], (rev_startx - (i * l_x)), l_y, -l_xf, -y,
                                      light_trigger_val[i]))
 
     for light in range(len(right_lights)):
-        rpm_light.initialize(right_lights[light])
-        rpm_light.initialize(left_lights[light])
+        RpmLight.initialize(right_lights[light])
+        RpmLight.initialize(left_lights[light])
     return
+
+
+def setup_data_arrays():
+    global sector1
+    global sector2
+    global sector3
+    global lap_times
+    sector1 = DataSet("S1", 0)
+    sector2 = DataSet("S2", 0)
+    sector3 = DataSet("S3", 0)
+    lap_times = DataSet("Lap Times", 0)
+    return
+
 
 
 def initial_setup():
     info = pygame.display.Info()
     print type(info)
     setup_rpm_markers(info)
+    setup_data_arrays()
     pygame.display.update()
     return
 
 
 def update_rpm(rpm):
     for light in range(len(right_lights)):
-        rpm_light.update(right_lights[light], rpm)
-        rpm_light.update(left_lights[light], rpm)
+        RpmLight.update(right_lights[light], rpm)
+        RpmLight.update(left_lights[light], rpm)
     return
 
 
@@ -140,7 +185,7 @@ def randomizer():
 def test_text():
     x = 0
     y = 300
-    test1 = display_text("test", ".", GREEN, BLACK, 500, 300)
+    test1 = DisplayText("test", ".", GREEN, BLACK, 500, 300)
 
     while x < 500:
         test1.draw_text(str(x), 500, y)
@@ -150,12 +195,24 @@ def test_text():
     return
 
 
+def test_data():
+    points1 = DataSet("points1", 0)
+    x = 0
+    while x < 20:
+        points1.add_value(x)
+        x += 1
+
+
 def game_loop():
     rpm = 0
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
+                print sector1
+                print sector2
+                print sector3
+                print lap_times
                 sys.exit()
             elif event.type == KEYDOWN:
                 if event.key == K_UP:
@@ -168,6 +225,8 @@ def game_loop():
                     randomizer()
                 if event.key == K_t:
                     test_text()
+                if event.key == K_m:
+                    test_data()
                 if event.key == K_q:
                     pygame.quit()
                     sys.exit()
@@ -176,7 +235,7 @@ def game_loop():
     return
 
 
-def pix_Array():
+def pix_array():
     # get a pixel array of the surface
     global pixArray
     pixArray = pygame.PixelArray(windowSurface)
@@ -187,7 +246,7 @@ def pix_Array():
 
 def main():
     initial_setup()
-    pix_Array()
+    pix_array()
     game_loop()
 
     return
