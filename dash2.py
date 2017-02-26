@@ -186,20 +186,20 @@ def setup_screen_text(info):
     height_ratio = 0.16                                                                 # Ratio multiplier
 
     # Latest Lap
-    s1a_indicator = DisplayText("s1a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio )*3)), sectorFont)
-    s1a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio)*2.5)))
-    s2a_indicator = DisplayText("s2a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio )*3)), sectorFont)
-    s2a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio)*2.5)))
-    s3a_indicator = DisplayText("s3a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio )*3)), sectorFont)
-    s3a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio)*2.5)))
+    s1a_indicator = DisplayText("s1a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio)*2)), sectorFont)
+    s1a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio)*2)))
+    s2a_indicator = DisplayText("s2a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio)*2)), sectorFont)
+    s2a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio)*2)))
+    s3a_indicator = DisplayText("s3a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio)*2)), sectorFont)
+    s3a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio)*2)))
 
     # Latest Lap + 1
-    s1b_indicator = DisplayText("s1b", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*0)+(info.current_w/60)),(height-((height*height_ratio )*2)), sectorFont)
-    s1b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio)*1.75)))
-    s2b_indicator = DisplayText("s2b", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio )*2)), sectorFont)
-    s2b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio )*1.75)))
-    s3b_indicator = DisplayText("s3b", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio )*2)), sectorFont)
-    s3b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio)*1.75)))
+    s1b_indicator = DisplayText("s1b", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*0)+(info.current_w/60)),(height-((height*height_ratio)*1.5)), sectorFont)
+    s1b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio)*1.5)))
+    s2b_indicator = DisplayText("s2b", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio)*1.5)), sectorFont)
+    s2b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio)*1.5)))
+    s3b_indicator = DisplayText("s3b", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio)*1.5)), sectorFont)
+    s3b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio)*1.5)))
 
     # Latest Lap +2
     s1c_indicator = DisplayText("s1c", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*0)+(info.current_w/60)),(height-((height*height_ratio)*1)), sectorFont)
@@ -279,9 +279,9 @@ def test_data():
 
 
 def test_sectors():
-    sector1.add_value(random.randint(10,100)*1.345)
-    sector2.add_value(random.randint(10,100)*1.345)
-    sector3.add_value(random.randint(10,100)*1.234)
+    sector1.add_value(random.randint(10,90)*1.345)
+    sector2.add_value(random.randint(10,90)*1.345)
+    sector3.add_value(random.randint(10,90)*1.234)
     update_sectors()
     return
 
