@@ -8,6 +8,7 @@ import os, sys, pygame, random, time, datetime
 from pygame.locals import *
 from dash_support import *
 from collections import deque
+from dash_network import receiver
 
 
 class DisplayText(object):
@@ -328,6 +329,12 @@ def game_loop():
                 if event.key == K_q:
                     pygame.quit()
                     sys.exit()
+
+        data_gear, data_mph_fix, data_brake, data_rpm, data_psi, data_sector, data_sector1, data_sector2, \
+        data_lastlap, data_fuel_in_tank, data_fuel_capacity, data_team_id, data_laptime, data_throttle_ped, \
+        data_brake_ped, data_drs, data_lap, data_position = receiver()
+
+        update_gear(data_gear)
 
         pygame.display.update()
     return
