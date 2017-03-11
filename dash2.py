@@ -335,6 +335,7 @@ def game_loop():
         data_brake_ped, data_drs, data_lap, data_position = receiver()
 
         update_gear(data_gear)
+        update_rpm(data_rpm)
 
         pygame.display.update()
     return
