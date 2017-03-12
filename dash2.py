@@ -11,6 +11,98 @@ from collections import deque
 from dash_network import receiver
 
 
+class IncomingData(object):
+    def __init__(self, name):
+        self.name = name
+        self.data_gear = "1"
+        self.data_rpm = 0
+        self.data_mph_fix = 0
+        self.data_brake = 0
+        self.data_psi = 0
+        self.data_sector = 0
+        self.data_sector1 = 0
+        self.data_sector2 = 0
+        self.data_lastlap = 0
+        self.data_fuel_in_tank = 0
+        self.data_fuel_capacity = 0
+        self.data_team_id = 0
+        self.data_laptime = 0
+        self.data_throttle_ped = 0
+        self.data_brake_ped = 0
+        self.data_drs = 0
+        self.data_lap = 0
+        self.data_position = 0
+        self.new_data_gear = "1"
+        self.new_data_rpm = 0
+        self.new_data_mph_fix = 0
+        self.new_data_brake = 0
+        self.new_data_psi = 0
+        self.new_data_sector = 0
+        self.new_data_sector1 = 0
+        self.new_data_sector2 = 0
+        self.new_data_lastlap = 0
+        self.new_data_fuel_in_tank = 0
+        self.new_data_fuel_capacity = 0
+        self.new_data_team_id = 0
+        self.new_data_laptime = 0
+        self.new_data_throttle_ped = 0
+        self.new_data_brake_ped = 0
+        self.new_data_drs = 0
+        self.new_data_lap = 0
+        self.new_data_position = 0
+
+    def update_all(self, data_gear, data_mph_fix, data_brake, data_rpm, data_psi, data_sector, data_sector1,
+                   data_sector2, data_lastlap, data_fuel_in_tank, data_fuel_capacity, data_team_id, data_laptime,
+                   data_throttle_ped, data_brake_ped, data_drs, data_lap, data_position):
+        self.new_data_gear = data_gear
+        self.new_data_rpm = data_rpm
+        self.new_data_mph_fix = data_mph_fix
+        self.new_data_brake = data_brake
+        self.new_data_psi = data_psi
+        self.new_data_sector = data_sector
+        self.new_data_sector1 = data_sector1
+        self.new_data_sector2 = data_sector2
+        self.new_data_lastlap = data_lastlap
+        self.new_data_fuel_in_tank = data_fuel_in_tank
+        self.new_data_fuel_capacity = data_fuel_capacity
+        self.new_data_team_id = data_team_id
+        self.new_data_laptime = data_laptime
+        self.new_data_throttle_ped = data_throttle_ped
+        self.new_data_brake_ped = data_brake_ped
+        self.new_data_drs = data_drs
+        self.new_data_lap = data_lap
+        self.new_data_position = data_position
+
+        # ____RPM____
+        # Assume RPM has changed and updated, no need to check if the rpm has changed.
+        # Only old women drive at a constant RPM, and those that crash Saxos on roundabouts.
+        for light in range(len(right_lights)):
+            RpmLight.update(right_lights[light], self.new_data_rpm)
+            RpmLight.update(left_lights[light], self.new_data_rpm)
+        self.data_rpm = self.new_data_rpm
+        
+        # ____MPH____
+        #
+        # Display function needs to be added here.
+        if self.new_data_mph_fix != self.data_mph_fix:
+            print "Changed mph, no value at screen attribute at the second:  " + str(self.new_data_mph_fix)
+        self.data_mph_fix = self.new_data_mph_fix
+
+        # ____GEAR____
+        # Next check to see if the gear value has changed, working still as a float. compare new against stored.
+        # Process helps reduce excessive screen updates, which can be a problem on hi-res displays.
+        if self.new_data_gear != self.data_gear:
+            update_gear(str(int(self.new_data_gear)))    # It's changed, call update routine setting, casting Int first
+        self.data_gear = self.new_data_gear              # Now update the stored values new --> stored.
+
+
+
+
+
+
+
+
+
 class DisplayText(object):
     def __init__(self, name, textval, forecolour, backcolour, loc_x, loc_y, myfont):
         self.name = name
@@ -236,6 +328,7 @@ def update_gear(gear):
     gear_indicator.change_text(gear)
     return
 
+
 def update_sectors():
     s1a_indicator.change_text(str(sector1.values[0]))
     s2a_indicator.change_text(str(sector2.values[0]))
@@ -247,6 +340,7 @@ def update_sectors():
     s2c_indicator.change_text(str(sector2.values[2]))
     s3c_indicator.change_text(str(sector3.values[2]))
     return
+
 
 def randomizer():
     x = 0
@@ -286,7 +380,9 @@ def test_sectors():
     update_sectors()
     return
 
+
 def game_loop():
+    my_received_data = IncomingData("telemetry")
     rpm = 0
     while True:
         for event in pygame.event.get():
@@ -334,8 +430,13 @@ def game_loop():
         data_lastlap, data_fuel_in_tank, data_fuel_capacity, data_team_id, data_laptime, data_throttle_ped, \
         data_brake_ped, data_drs, data_lap, data_position = receiver()
 
-        update_gear(data_gear)
-        update_rpm(data_rpm)
+        my_received_data.update_all(data_gear, data_mph_fix, data_brake, data_rpm, data_psi, data_sector,
+                                    data_sector1, data_sector2, data_lastlap, data_fuel_in_tank,
+                                    data_fuel_capacity, data_team_id, data_laptime, data_throttle_ped,
+                                    data_brake_ped, data_drs, data_lap, data_position)
+
+        #update_gear(str(data_gear))
+        #update_rpm(data_rpm)
 
         pygame.display.update()
     return

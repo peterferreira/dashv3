@@ -9,7 +9,7 @@ import socket
 # Configure listener IP & Port for UDP transmission of packed values
 global udp_ip
 global udp_port
-udp_ip = "0.0.0.0"
+udp_ip = "192.168.178.57"
 udp_port = 20777
 
 global fmt
