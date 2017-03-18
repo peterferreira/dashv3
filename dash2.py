@@ -79,13 +79,13 @@ class IncomingData(object):
         for light in range(len(right_lights)):
             RpmLight.update(right_lights[light], self.new_data_rpm)
             RpmLight.update(left_lights[light], self.new_data_rpm)
+        rpm_indicator.change_text(str(int(self.new_data_rpm)))
         self.data_rpm = self.new_data_rpm
-        
+
         # ____MPH____
-        #
         # Display function needs to be added here.
         if self.new_data_mph_fix != self.data_mph_fix:
-            print "Changed mph, no value at screen attribute at the second:  " + str(self.new_data_mph_fix)
+            mph_indicator.change_text(str(int(self.new_data_mph_fix)).ljust(3))
         self.data_mph_fix = self.new_data_mph_fix
 
         # ____GEAR____
@@ -94,13 +94,6 @@ class IncomingData(object):
         if self.new_data_gear != self.data_gear:
             update_gear(str(int(self.new_data_gear)))    # It's changed, call update routine setting, casting Int first
         self.data_gear = self.new_data_gear              # Now update the stored values new --> stored.
-
-
-
-
-
-
-
 
 
 class DisplayText(object):
@@ -136,7 +129,6 @@ class DisplayText(object):
         oldtext = self.myfont.render(self.old_textval, False, BLACK)
         self.myfont.set_bold(True)
         windowSurface.blit(oldtext, (self.old_loc_x, self.old_loc_y))
-        pygame.display.update()
         self.myfont.set_bold(False)
         text = self.myfont.render(self.textval, False, self.forecolour)
         windowSurface.blit(text, (self.loc_x, self.loc_y))
@@ -257,6 +249,8 @@ def setup_data_arrays():
 
 def setup_screen_text(info):
     global gear_indicator
+    global mph_indicator
+    global rpm_indicator
     global s1a_indicator
     global s2a_indicator
     global s3a_indicator
@@ -273,6 +267,17 @@ def setup_screen_text(info):
     gear_indicator = DisplayText("gear", "-", GREEN, BLACK, (info.current_w*gear_text_width_multiplier), info.current_h*gear_text_height_multiplier, basicFont)
     gear_indicator.draw_text("1", (info.current_w*gear_text_width_multiplier), info.current_h*gear_text_height_multiplier)
 
+    # MPH Indicator
+    mph_indicator = DisplayText("mph", "000", GREEN, BLACK, (info.current_w*mph_text_width_multiplier),
+                                (info.current_h*mph_text_height_multiplier), mphFont)
+    mph_indicator.draw_text("000", (info.current_w*mph_text_width_multiplier),
+                            (info.current_h*mph_text_height_multiplier))
+
+    # MPH Indicator
+    rpm_indicator = DisplayText("mph", "000", GREEN, BLACK, (info.current_w*rpm_text_width_multiplier),
+                                (info.current_h*rpm_text_height_multiplier), mphFont)
+    rpm_indicator.draw_text("000", (info.current_w*rpm_text_width_multiplier),
+                            (info.current_h*rpm_text_height_multiplier))
 
     # Scaling factors for sector times
     height = info.current_h                                                             # Height of the screen
@@ -470,13 +475,9 @@ if __name__ == '__main__':
             # set up fonts
     basicFont = pygame.font.Font(fontpath, int((info.current_w) * gear_fontsize_ratio))
     sectorFont = pygame.font.Font(fontpath, int(info.current_w * sector_fontsize_ratio))
+    mphFont = pygame.font.Font(fontpath, int(info.current_w * mph_fontsize_ratio))
     instruFont = pygame.font.SysFont(None, instru_fontsize)
     logoFont = pygame.font.SysFont(None, logo_fontsize)
-    # rpmFont = pygame.font.SysFont(None, rpm_fontsize)
-    bigFont = pygame.font.Font(fontpath, big_fontsize)
-    midFont = pygame.font.Font(fontpath, mid_fontsize)
-    mphFont = pygame.font.SysFont(None, rpm_fontsize)
-    brakeFont = pygame.font.SysFont(None, rpm_fontsize)
 
     windowSurface = pygame.display.set_mode((0, 0), pygame.FULLSCREEN, 32)  # Now automatically uses full screen
     pygame.display.set_caption(display_title)

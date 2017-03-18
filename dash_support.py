@@ -15,6 +15,11 @@ gear_text_width_multiplier = 0.465
 sector_space_div = 6.5
 sector_a_height_multiplier = 0.6
 
+mph_text_height_multiplier = 0.06
+mph_text_width_multiplier = 0.83
+
+rpm_text_height_multiplier = 0.06
+rpm_text_width_multiplier = 0.015
 
 # Throttle and brake pedal position lines
 throt_pedal_line_x = 550
@@ -57,6 +62,7 @@ LCD_font = "open24displayst"
 # FONT SIZES
 gear_fontsize_ratio = 0.4
 sector_fontsize_ratio = 0.04
+mph_fontsize_ratio = 0.12
 
 big_fontsize = 80
 mid_fontsize = 45
