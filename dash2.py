@@ -83,7 +83,6 @@ class IncomingData(object):
         self.data_rpm = self.new_data_rpm
 
         # ____MPH____
-        # Display function needs to be added here.
         if self.new_data_mph_fix != self.data_mph_fix:
             mph_indicator.change_text(str(int(self.new_data_mph_fix)).ljust(3))
         self.data_mph_fix = self.new_data_mph_fix
@@ -92,8 +91,12 @@ class IncomingData(object):
         # Next check to see if the gear value has changed, working still as a float. compare new against stored.
         # Process helps reduce excessive screen updates, which can be a problem on hi-res displays.
         if self.new_data_gear != self.data_gear:
-            update_gear(str(int(self.new_data_gear)))    # It's changed, call update routine setting, casting Int first
+            update_gear(str(int(self.new_data_gear)), int(self.new_data_rpm))    # It's changed, call update routine setting, casting Int first
         self.data_gear = self.new_data_gear              # Now update the stored values new --> stored.
+
+        # ____LAPTIME____
+        laptime_indicator.change_text(str(round(self.new_data_laptime, 3)).ljust(3))
+        self.data_laptime = self.new_data_laptime
 
 
 class DisplayText(object):
@@ -108,6 +111,7 @@ class DisplayText(object):
         self.old_loc_y = loc_y
         self.old_textval = textval
         self.myfont = myfont
+        self.colour = GREEN
 
     def draw_text(self, textval, loc_x, loc_y):
         self.textval = textval
@@ -131,6 +135,20 @@ class DisplayText(object):
         windowSurface.blit(oldtext, (self.old_loc_x, self.old_loc_y))
         self.myfont.set_bold(False)
         text = self.myfont.render(self.textval, False, self.forecolour)
+        windowSurface.blit(text, (self.loc_x, self.loc_y))
+        pygame.display.update()
+        self.old_loc_x = self.loc_x
+        self.old_loc_y = self.loc_y
+        self.old_textval = self.textval
+
+    def change_text_colour(self, textval, colour):
+        self.textval = textval
+        self.colour = colour
+        oldtext = self.myfont.render(self.old_textval, False, BLACK)
+        self.myfont.set_bold(True)
+        windowSurface.blit(oldtext, (self.old_loc_x, self.old_loc_y))
+        self.myfont.set_bold(False)
+        text = self.myfont.render(self.textval, False, self.colour)
         windowSurface.blit(text, (self.loc_x, self.loc_y))
         pygame.display.update()
         self.old_loc_x = self.loc_x
@@ -248,6 +266,7 @@ def setup_data_arrays():
 
 
 def setup_screen_text(info):
+    global laptime_indicator
     global gear_indicator
     global mph_indicator
     global rpm_indicator
@@ -262,6 +281,12 @@ def setup_screen_text(info):
     global s1c_indicator
     global s2c_indicator
     global s3c_indicator
+
+    # MPH Indicator
+    laptime_indicator = DisplayText("mph", "000", GREEN, BLACK, (info.current_w*laptime_text_width_multiplier),
+                                (info.current_h*laptime_text_height_multiplier), laptimeFont)
+    laptime_indicator.draw_text("000", (info.current_w*laptime_text_width_multiplier),
+                            (info.current_h*laptime_text_height_multiplier))
 
     # Gear Indicator
     gear_indicator = DisplayText("gear", "-", GREEN, BLACK, (info.current_w*gear_text_width_multiplier), info.current_h*gear_text_height_multiplier, basicFont)
@@ -329,8 +354,8 @@ def update_rpm(rpm):
     return
 
 
-def update_gear(gear):
-    gear_indicator.change_text(gear)
+def update_gear(gear, rpm):
+    gear_indicator.change_text_colour(gear, GREEN)
     return
 
 
@@ -476,6 +501,7 @@ if __name__ == '__main__':
     basicFont = pygame.font.Font(fontpath, int((info.current_w) * gear_fontsize_ratio))
     sectorFont = pygame.font.Font(fontpath, int(info.current_w * sector_fontsize_ratio))
     mphFont = pygame.font.Font(fontpath, int(info.current_w * mph_fontsize_ratio))
+    laptimeFont = pygame.font.Font(fontpath, int(info.current_w * laptime_fontsize_ratio))
     instruFont = pygame.font.SysFont(None, instru_fontsize)
     logoFont = pygame.font.SysFont(None, logo_fontsize)
 

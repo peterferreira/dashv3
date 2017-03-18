@@ -15,6 +15,9 @@ gear_text_width_multiplier = 0.465
 sector_space_div = 6.5
 sector_a_height_multiplier = 0.6
 
+laptime_text_height_multiplier = 0.4
+laptime_text_width_multiplier = 0.014
+
 mph_text_height_multiplier = 0.06
 mph_text_width_multiplier = 0.83
 
@@ -63,10 +66,8 @@ LCD_font = "open24displayst"
 gear_fontsize_ratio = 0.4
 sector_fontsize_ratio = 0.04
 mph_fontsize_ratio = 0.12
+laptime_fontsize_ratio = 0.075
 
-big_fontsize = 80
-mid_fontsize = 45
-rpm_fontsize = 70
 instru_fontsize = 20
 logo_fontsize = 20
 
@@ -107,5 +108,3 @@ light_trigger_val = [6500, 7000, 7500, 8000, 8500, 9000, 9250, 9500, 9725, 10000
 
 light_colour = [GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, YELLOW,
                 YELLOW, YELLOW, YELLOW, YELLOW, RED, RED, RED]
-
-
