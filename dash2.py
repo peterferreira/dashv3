@@ -98,6 +98,12 @@ class IncomingData(object):
         laptime_indicator.change_text(str(round(self.new_data_laptime, 3)).ljust(3))
         self.data_laptime = self.new_data_laptime
 
+        if (self.new_data_sector1 != self.data_sector1) and self.new_data_sector1 > 0:
+            print "new sector : " + str(self.new_data_sector1)
+            sector1.add_value(round(self.new_data_sector1, 3))
+            update_sectors()
+            self.data_sector1 = self.new_data_sector1
+
 
 class DisplayText(object):
     def __init__(self, name, textval, forecolour, backcolour, loc_x, loc_y, myfont):
