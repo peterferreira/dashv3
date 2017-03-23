@@ -7,7 +7,7 @@ display_title = 'Codemasters F1 2016'
 display_line_width = 2
 
 # RPM Bars
-bar_as_percentage_of_total_height = 0.10
+bar_as_percentage_of_total_height = 0.12
 
 gear_text_height_multiplier = 0.05
 gear_text_width_multiplier = 0.465
@@ -108,3 +108,5 @@ light_trigger_val = [6500, 7000, 7500, 8000, 8500, 9000, 9250, 9500, 9725, 10000
 
 light_colour = [GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, YELLOW,
                 YELLOW, YELLOW, YELLOW, YELLOW, RED, RED, RED]
+
+gear_lookup = ["na", "R", "1", "2", "3", "4", "5", "6", "7", "8"]

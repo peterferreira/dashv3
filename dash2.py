@@ -91,7 +91,7 @@ class IncomingData(object):
         # Next check to see if the gear value has changed, working still as a float. compare new against stored.
         # Process helps reduce excessive screen updates, which can be a problem on hi-res displays.
         if self.new_data_gear != self.data_gear:
-            update_gear(str(int(self.new_data_gear)), int(self.new_data_rpm))    # It's changed, call update routine setting, casting Int first
+            update_gear(int(self.new_data_gear), int(self.new_data_rpm))    # It's changed, call update routine setting, casting Int first
         self.data_gear = self.new_data_gear              # Now update the stored values new --> stored.
 
         # ____LAPTIME____
@@ -355,7 +355,7 @@ def update_rpm(rpm):
 
 
 def update_gear(gear, rpm):
-    gear_indicator.change_text_colour(gear, GREEN)
+    gear_indicator.change_text_colour(gear_lookup[gear], GREEN)
     return
 
 
