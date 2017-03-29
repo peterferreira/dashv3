@@ -50,6 +50,12 @@ class IncomingData(object):
         self.new_data_drs = 0
         self.new_data_lap = 0
         self.new_data_position = 0
+        self.fastest_data_sector1 = 0
+        self.fastest_data_sector2 = 0
+        self.fastest_data_sector3 = 0
+        self.fastest_data_laptime = 0
+        self.data_lapdelta = 0
+
 
     def update_all(self, data_gear, data_mph_fix, data_brake, data_rpm, data_psi, data_sector, data_sector1,
                    data_sector2, data_lastlap, data_fuel_in_tank, data_fuel_capacity, data_team_id, data_laptime,
@@ -94,15 +100,37 @@ class IncomingData(object):
             update_gear(int(self.new_data_gear), int(self.new_data_rpm))    # It's changed, call update routine setting, casting Int first
         self.data_gear = self.new_data_gear              # Now update the stored values new --> stored.
 
-        # ____LAPTIME____
+        # ____LAPTIME & LASTLAP____
         laptime_indicator.change_text(str(round(self.new_data_laptime, 3)).ljust(3))
         self.data_laptime = self.new_data_laptime
 
+        if (self.new_data_lastlap != self.data_lastlap) and self.new_data_lastlap > 0:
+            # Fastest lap update sequence
+            if (self.new_data_lastlap < self.fastest_data_laptime) and self.new_data_lastlap > 0:
+                fastest_lap_indicator.change_text(str(round(self.new_data_lastlap, 3)).ljust(3))
+                lastlap_indicator.change_text_colour(str(round(self.new_data_lastlap, 3)).ljust(3), PURPLE)
+                self.fastest_data_laptime = self.new_data_lastlap
+            elif self.fastest_data_laptime == 0:
+                    fastest_lap_indicator.change_text(str(round(self.new_data_lastlap, 3)).ljust(3))
+                    lastlap_indicator.change_text_colour(str(round(self.new_data_lastlap, 3)).ljust(3), PURPLE)
+                    self.fastest_data_laptime = self.new_data_lastlap
+            else:
+                lastlap_indicator.change_text(str(round(self.new_data_lastlap, 3)).ljust(3))
+            self.data_lapdelta = self.new_data_lastlap - self.fastest_data_laptime
+            delta_lap_indicator.change_text(str(round(self.data_lapdelta, 3)).ljust(3))
+            self.data_lastlap = self.new_data_lastlap
+
+        # ____SECTORS____
+        # ______S1_______
         if (self.new_data_sector1 != self.data_sector1) and self.new_data_sector1 > 0:
-            print "new sector : " + str(self.new_data_sector1)
             sector1.add_value(round(self.new_data_sector1, 3))
             update_sectors()
             self.data_sector1 = self.new_data_sector1
+        # ______S2_______
+        if (self.new_data_sector2 != self.data_sector2) and self.new_data_sector2 > 0:
+            sector2.add_value(round(self.new_data_sector2, 3))
+            update_sectors()
+            self.data_sector2 = self.new_data_sector2
 
 
 class DisplayText(object):
@@ -264,9 +292,9 @@ def setup_data_arrays():
     global sector2                          # Sector 2 times,
     global sector3                          # Sector 3 times,
     global lap_times                        # Sector 4 times,
-    sector1 = DataSet("S1", 10)
-    sector2 = DataSet("S2", 10)
-    sector3 = DataSet("S3", 10)
+    sector1 = DataSet("S1", 20)
+    sector2 = DataSet("S2", 20)
+    sector3 = DataSet("S3", 20)
     lap_times = DataSet("Lap Times", 0)
     return
 
@@ -276,6 +304,9 @@ def setup_screen_text(info):
     global gear_indicator
     global mph_indicator
     global rpm_indicator
+    global lastlap_indicator
+    global fastest_lap_indicator
+    global delta_lap_indicator
     global s1a_indicator
     global s2a_indicator
     global s3a_indicator
@@ -288,15 +319,35 @@ def setup_screen_text(info):
     global s2c_indicator
     global s3c_indicator
 
-    # MPH Indicator
-    laptime_indicator = DisplayText("mph", "000", GREEN, BLACK, (info.current_w*laptime_text_width_multiplier),
-                                (info.current_h*laptime_text_height_multiplier), laptimeFont)
-    laptime_indicator.draw_text("000", (info.current_w*laptime_text_width_multiplier),
-                            (info.current_h*laptime_text_height_multiplier))
+    # Laptime Indicator
+    laptime_indicator = DisplayText("mph", "0", GREEN, BLACK, (info.current_w*laptime_text_width_multiplier),
+                                    (info.current_h*laptime_text_height_multiplier), laptimeFont)
+    laptime_indicator.draw_text("0", (info.current_w*laptime_text_width_multiplier),
+                                (info.current_h*laptime_text_height_multiplier))
+
+    # Last Lap Indicator
+    lastlap_indicator = DisplayText("sector", "0", GREEN, BLACK, (info.current_w*lastlap_text_width_multiplier),
+                                    (info.current_h*lastlap_text_height_multiplier), sectorFont)
+    lastlap_indicator.draw_text("0", (info.current_w*lastlap_text_width_multiplier),
+                                (info.current_h*lastlap_text_height_multiplier))
+
+    # Fastest Lap Indicator
+    fastest_lap_indicator = DisplayText("sector", "0", GREEN, BLACK, (info.current_w*fastest_lap_text_width_multiplier),
+                                        (info.current_h*fastest_lap_text_height_multiplier), sectorFont)
+    fastest_lap_indicator.draw_text("0", (info.current_w*fastest_lap_text_width_multiplier),
+                                    (info.current_h*fastest_lap_text_height_multiplier))
+
+    # Delta Lap Indicator
+    delta_lap_indicator = DisplayText("sector", "0", GREEN, BLACK, (info.current_w*delta_lap_text_width_multiplier),
+                                      (info.current_h*delta_lap_text_height_multiplier), sectorFont)
+    delta_lap_indicator.draw_text("0", (info.current_w*delta_lap_text_width_multiplier),
+                                  (info.current_h*delta_lap_text_height_multiplier))
 
     # Gear Indicator
-    gear_indicator = DisplayText("gear", "-", GREEN, BLACK, (info.current_w*gear_text_width_multiplier), info.current_h*gear_text_height_multiplier, basicFont)
-    gear_indicator.draw_text("1", (info.current_w*gear_text_width_multiplier), info.current_h*gear_text_height_multiplier)
+    gear_indicator = DisplayText("gear", "-", GREEN, BLACK, (info.current_w*gear_text_width_multiplier),
+                                 info.current_h*gear_text_height_multiplier, basicFont)
+    gear_indicator.draw_text("1", (info.current_w*gear_text_width_multiplier),
+                             info.current_h*gear_text_height_multiplier)
 
     # MPH Indicator
     mph_indicator = DisplayText("mph", "000", GREEN, BLACK, (info.current_w*mph_text_width_multiplier),
@@ -312,33 +363,30 @@ def setup_screen_text(info):
 
     # Scaling factors for sector times
     height = info.current_h                                                             # Height of the screen
-    height_ratio = 0.16                                                                 # Ratio multiplier
 
     # Latest Lap
-    s1a_indicator = DisplayText("s1a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio)*2)), sectorFont)
-    s1a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio)*2)))
-    s2a_indicator = DisplayText("s2a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio)*2)), sectorFont)
-    s2a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio)*2)))
-    s3a_indicator = DisplayText("s3a", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio)*2)), sectorFont)
-    s3a_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio)*2)))
+    s1a_indicator = DisplayText("s1a", "0", GREEN, BLACK, (((info.current_w/sector_space_div)*width_1_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_a_multiplier)), sectorFont)
+    s1a_indicator.draw_text("0", (((info.current_w/sector_space_div)*width_1_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_a_multiplier)))
+    s2a_indicator = DisplayText("s2a", "0", GREEN, BLACK, (((info.current_w/sector_space_div)*width_2_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_a_multiplier)), sectorFont)
+    s2a_indicator.draw_text("0", (((info.current_w/sector_space_div)*width_2_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_a_multiplier)))
+    s3a_indicator = DisplayText("s3a", "0", GREEN, BLACK, (((info.current_w/sector_space_div)*width_3_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_a_multiplier)), sectorFont)
+    s3a_indicator.draw_text("0", (((info.current_w/sector_space_div)*width_3_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_a_multiplier)))
 
     # Latest Lap + 1
-    s1b_indicator = DisplayText("s1b", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*0)+(info.current_w/60)),(height-((height*height_ratio)*1.5)), sectorFont)
-    s1b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio)*1.5)))
-    s2b_indicator = DisplayText("s2b", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio)*1.5)), sectorFont)
-    s2b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio)*1.5)))
-    s3b_indicator = DisplayText("s3b", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio)*1.5)), sectorFont)
-    s3b_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio)*1.5)))
+    s1b_indicator = DisplayText("s1b", "0", GREEN, BLACK, (((info.current_w/sector_space_div)*width_1_multiplier)+(info.current_w/width_divisor)),(height-((height*height_ratio)*height_b_multiplier)), sectorFont)
+    s1b_indicator.draw_text("0", (((info.current_w/sector_space_div)*width_1_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_b_multiplier)))
+    s2b_indicator = DisplayText("s2b", "0", GREEN, BLACK, (((info.current_w/sector_space_div)*width_2_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_b_multiplier)), sectorFont)
+    s2b_indicator.draw_text("0", (((info.current_w/sector_space_div)*width_2_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_b_multiplier)))
+    s3b_indicator = DisplayText("s3b", "0", GREEN, BLACK, (((info.current_w/sector_space_div)*width_3_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_b_multiplier)), sectorFont)
+    s3b_indicator.draw_text("0", (((info.current_w/sector_space_div)*width_3_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_b_multiplier)))
 
     # Latest Lap +2
-    s1c_indicator = DisplayText("s1c", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*0)+(info.current_w/60)),(height-((height*height_ratio)*1)), sectorFont)
-    s1c_indicator.draw_text("1.00", (((info.current_w/sector_space_div)*0)+(info.current_w/60)), (height-((height*height_ratio)*1)))
-
-    s2c_indicator = DisplayText("s2c", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio)*1)), sectorFont)
-    s2c_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*1)+(info.current_w/60)), (height-((height*height_ratio)*1)))
-
-    s3c_indicator = DisplayText("s3c", "0.00", GREEN, BLACK, (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio)*1)), sectorFont)
-    s3c_indicator.draw_text("0.00", (((info.current_w/sector_space_div)*2)+(info.current_w/60)), (height-((height*height_ratio)*1)))
+    s1c_indicator = DisplayText("s1c", "0", GREEN, BLACK, (((info.current_w/sector_space_div)*width_1_multiplier)+(info.current_w/width_divisor)),(height-((height*height_ratio)*height_c_multiplier)), sectorFont)
+    s1c_indicator.draw_text("0", (((info.current_w/sector_space_div)*width_1_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_c_multiplier)))
+    s2c_indicator = DisplayText("s2c", "0", GREEN, BLACK, (((info.current_w/sector_space_div)*width_2_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_c_multiplier)), sectorFont)
+    s2c_indicator.draw_text("0", (((info.current_w/sector_space_div)*width_2_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_c_multiplier)))
+    s3c_indicator = DisplayText("s3c", "0", GREEN, BLACK, (((info.current_w/sector_space_div)*width_3_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_c_multiplier)), sectorFont)
+    s3c_indicator.draw_text("0", (((info.current_w/sector_space_div)*width_3_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_c_multiplier)))
 
     return
 
@@ -463,16 +511,13 @@ def game_loop():
                     sys.exit()
 
         data_gear, data_mph_fix, data_brake, data_rpm, data_psi, data_sector, data_sector1, data_sector2, \
-        data_lastlap, data_fuel_in_tank, data_fuel_capacity, data_team_id, data_laptime, data_throttle_ped, \
-        data_brake_ped, data_drs, data_lap, data_position = receiver()
+            data_lastlap, data_fuel_in_tank, data_fuel_capacity, data_team_id, data_laptime, data_throttle_ped, \
+            data_brake_ped, data_drs, data_lap, data_position = receiver()
 
         my_received_data.update_all(data_gear, data_mph_fix, data_brake, data_rpm, data_psi, data_sector,
                                     data_sector1, data_sector2, data_lastlap, data_fuel_in_tank,
                                     data_fuel_capacity, data_team_id, data_laptime, data_throttle_ped,
                                     data_brake_ped, data_drs, data_lap, data_position)
-
-        #update_gear(str(data_gear))
-        #update_rpm(data_rpm)
 
         pygame.display.update()
     return

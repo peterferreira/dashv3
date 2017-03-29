@@ -9,14 +9,34 @@ display_line_width = 2
 # RPM Bars
 bar_as_percentage_of_total_height = 0.12
 
-gear_text_height_multiplier = 0.05
-gear_text_width_multiplier = 0.465
+gear_text_height_multiplier = 0.01
+gear_text_width_multiplier = 0.425
 
+# POSSIBLE OLD VALUES, NEEDS CHECKING
 sector_space_div = 6.5
 sector_a_height_multiplier = 0.6
 
-laptime_text_height_multiplier = 0.4
+# SECTOR TIMES POSITIONAL PARAMETERS
+height_ratio = 0.155                                                                # Ratio multiplier
+height_a_multiplier = 1.75
+height_b_multiplier = 1.25
+height_c_multiplier = 0.75
+width_divisor = 80
+width_1_multiplier = 0
+width_2_multiplier = 0.8
+width_3_multiplier = 1.7
+
+laptime_text_height_multiplier = 0.35
 laptime_text_width_multiplier = 0.014
+
+lastlap_text_height_multiplier = 0.5
+lastlap_text_width_multiplier = 0.014
+
+fastest_lap_text_height_multiplier = 0.59
+fastest_lap_text_width_multiplier = 0.014
+
+delta_lap_text_height_multiplier = 0.54
+delta_lap_text_width_multiplier = 0.2
 
 mph_text_height_multiplier = 0.06
 mph_text_width_multiplier = 0.83
