@@ -14,7 +14,7 @@ from dash_network import receiver
 class IncomingData(object):
     def __init__(self, name):
         self.name = name
-        self.data_gear = "1"
+        self.data_gear = "-"
         self.data_rpm = 0
         self.data_mph_fix = 0
         self.data_brake = 0
@@ -55,7 +55,6 @@ class IncomingData(object):
         self.fastest_data_sector3 = 0
         self.fastest_data_laptime = 0
         self.data_lapdelta = 0
-
 
     def update_all(self, data_gear, data_mph_fix, data_brake, data_rpm, data_psi, data_sector, data_sector1,
                    data_sector2, data_lastlap, data_fuel_in_tank, data_fuel_capacity, data_team_id, data_laptime,
@@ -132,6 +131,15 @@ class IncomingData(object):
             update_sectors()
             self.data_sector2 = self.new_data_sector2
 
+        # ____POSITION____
+        if self.new_data_position != self.data_position:
+            position_indicator.change_text(str(self.new_data_position).ljust(3))
+            self.data_position = self.new_data_position
+
+        # ____Lap____
+        if self.new_data_lap != self.data_lap:
+            lap_indicator.change_text(str(int(self.new_data_lap)).ljust(3))
+            self.data_lap = self.new_data_lap
 
 class DisplayText(object):
     def __init__(self, name, textval, forecolour, backcolour, loc_x, loc_y, myfont):
@@ -300,6 +308,8 @@ def setup_data_arrays():
 
 
 def setup_screen_text(info):
+    global position_indicator
+    global lap_indicator
     global laptime_indicator
     global gear_indicator
     global mph_indicator
@@ -318,6 +328,18 @@ def setup_screen_text(info):
     global s1c_indicator
     global s2c_indicator
     global s3c_indicator
+
+    # Position Indicator
+    position_indicator = DisplayText("position", "0", GREEN, BLACK, (info.current_w*position_text_width_multiplier),
+                                     (info.current_h*position_text_height_multiplier), laptimeFont)
+    position_indicator.draw_text("0", (info.current_w*position_text_width_multiplier),
+                                 (info.current_h*position_text_height_multiplier))
+
+    # Lap Indicator
+    lap_indicator = DisplayText("lap", "0", GREEN, BLACK, (info.current_w*lap_text_width_multiplier),
+                                (info.current_h*lap_text_height_multiplier), laptimeFont)
+    lap_indicator.draw_text("0", (info.current_w*lap_text_width_multiplier),
+                            (info.current_h*lap_text_height_multiplier))
 
     # Laptime Indicator
     laptime_indicator = DisplayText("mph", "0", GREEN, BLACK, (info.current_w*laptime_text_width_multiplier),
@@ -348,7 +370,6 @@ def setup_screen_text(info):
                                  info.current_h*gear_text_height_multiplier, basicFont)
     gear_indicator.draw_text("1", (info.current_w*gear_text_width_multiplier),
                              info.current_h*gear_text_height_multiplier)
-
     # MPH Indicator
     mph_indicator = DisplayText("mph", "000", GREEN, BLACK, (info.current_w*mph_text_width_multiplier),
                                 (info.current_h*mph_text_height_multiplier), mphFont)
@@ -363,7 +384,6 @@ def setup_screen_text(info):
 
     # Scaling factors for sector times
     height = info.current_h                                                             # Height of the screen
-
     # Latest Lap
     s1a_indicator = DisplayText("s1a", "0", GREEN, BLACK, (((info.current_w/sector_space_div)*width_1_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_a_multiplier)), sectorFont)
     s1a_indicator.draw_text("0", (((info.current_w/sector_space_div)*width_1_multiplier)+(info.current_w/width_divisor)), (height-((height*height_ratio)*height_a_multiplier)))

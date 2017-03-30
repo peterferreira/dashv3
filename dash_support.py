@@ -9,7 +9,7 @@ display_line_width = 2
 # RPM Bars
 bar_as_percentage_of_total_height = 0.12
 
-gear_text_height_multiplier = 0.01
+gear_text_height_multiplier = 0.004
 gear_text_width_multiplier = 0.425
 
 # POSSIBLE OLD VALUES, NEEDS CHECKING
@@ -43,6 +43,12 @@ mph_text_width_multiplier = 0.83
 
 rpm_text_height_multiplier = 0.06
 rpm_text_width_multiplier = 0.015
+
+position_text_height_multiplier = 0.35
+position_text_width_multiplier = 0.9
+
+lap_text_height_multiplier = 0.55
+lap_text_width_multiplier = 0.9
 
 # Throttle and brake pedal position lines
 throt_pedal_line_x = 550
@@ -83,7 +89,7 @@ YELLOW = (219, 200, 10)
 LCD_font = "open24displayst"
 
 # FONT SIZES
-gear_fontsize_ratio = 0.4
+gear_fontsize_ratio = 0.45
 sector_fontsize_ratio = 0.04
 mph_fontsize_ratio = 0.12
 laptime_fontsize_ratio = 0.075
