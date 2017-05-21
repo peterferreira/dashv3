@@ -46,6 +46,7 @@ def receiver():
     data_drs = 0
     data_lap = 0
     data_position = 0
+    data_flags = 0
 
     rx_data = net_rx(udp_ip, udp_port)
     if rx_data:
@@ -82,9 +83,11 @@ def receiver():
 
         data_last_lap = unpacked_data[62]
 
+        data_flags = unpacked_data[69]
+
     return data_gear, data_mph_fix, data_brake, data_rpm, data_psi, data_sector, data_sector1, data_sector2, \
            data_last_lap, data_fuel_in_tank, data_fuel_capacity, data_team_id, data_laptime, data_throttle_ped, \
-           data_brake_ped, data_drs, data_lap, data_position
+           data_brake_ped, data_drs, data_lap, data_position, data_flags
 
 
 def dummy_receiver():

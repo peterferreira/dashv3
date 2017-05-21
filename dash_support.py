@@ -45,10 +45,10 @@ rpm_text_height_multiplier = 0.06
 rpm_text_width_multiplier = 0.015
 
 position_text_height_multiplier = 0.35
-position_text_width_multiplier = 0.9
+position_text_width_multiplier = 0.83
 
 lap_text_height_multiplier = 0.55
-lap_text_width_multiplier = 0.9
+lap_text_width_multiplier = 0.83
 
 # Throttle and brake pedal position lines
 throt_pedal_line_x = 550
@@ -136,3 +136,5 @@ light_colour = [GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, G
                 YELLOW, YELLOW, YELLOW, YELLOW, RED, RED, RED]
 
 gear_lookup = ["na", "R", "1", "2", "3", "4", "5", "6", "7", "8"]
+
+flags_lookup = ["none", "Green", "Blue", "Yellow", "Red"]

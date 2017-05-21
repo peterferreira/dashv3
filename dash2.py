@@ -32,6 +32,7 @@ class IncomingData(object):
         self.data_drs = 0
         self.data_lap = 0
         self.data_position = 0
+        self.data_flags = 0
         self.new_data_gear = "1"
         self.new_data_rpm = 0
         self.new_data_mph_fix = 0
@@ -50,6 +51,7 @@ class IncomingData(object):
         self.new_data_drs = 0
         self.new_data_lap = 0
         self.new_data_position = 0
+        self.new_data_flags = 0
         self.fastest_data_sector1 = 0
         self.fastest_data_sector2 = 0
         self.fastest_data_sector3 = 0
@@ -58,7 +60,7 @@ class IncomingData(object):
 
     def update_all(self, data_gear, data_mph_fix, data_brake, data_rpm, data_psi, data_sector, data_sector1,
                    data_sector2, data_lastlap, data_fuel_in_tank, data_fuel_capacity, data_team_id, data_laptime,
-                   data_throttle_ped, data_brake_ped, data_drs, data_lap, data_position):
+                   data_throttle_ped, data_brake_ped, data_drs, data_lap, data_position, data_flags):
         self.new_data_gear = data_gear
         self.new_data_rpm = data_rpm
         self.new_data_mph_fix = data_mph_fix
@@ -77,6 +79,7 @@ class IncomingData(object):
         self.new_data_drs = data_drs
         self.new_data_lap = data_lap
         self.new_data_position = data_position
+        self.new_data_flags = data_flags
 
         # ____RPM____
         # Assume RPM has changed and updated, no need to check if the rpm has changed.
@@ -140,6 +143,7 @@ class IncomingData(object):
         if self.new_data_lap != self.data_lap:
             lap_indicator.change_text(str(int(self.new_data_lap)).ljust(3))
             self.data_lap = self.new_data_lap
+
 
 class DisplayText(object):
     def __init__(self, name, textval, forecolour, backcolour, loc_x, loc_y, myfont):
@@ -532,12 +536,12 @@ def game_loop():
 
         data_gear, data_mph_fix, data_brake, data_rpm, data_psi, data_sector, data_sector1, data_sector2, \
             data_lastlap, data_fuel_in_tank, data_fuel_capacity, data_team_id, data_laptime, data_throttle_ped, \
-            data_brake_ped, data_drs, data_lap, data_position = receiver()
+            data_brake_ped, data_drs, data_lap, data_position, data_flags = receiver()
 
         my_received_data.update_all(data_gear, data_mph_fix, data_brake, data_rpm, data_psi, data_sector,
                                     data_sector1, data_sector2, data_lastlap, data_fuel_in_tank,
                                     data_fuel_capacity, data_team_id, data_laptime, data_throttle_ped,
-                                    data_brake_ped, data_drs, data_lap, data_position)
+                                    data_brake_ped, data_drs, data_lap, data_position, data_flags)
 
         pygame.display.update()
     return
